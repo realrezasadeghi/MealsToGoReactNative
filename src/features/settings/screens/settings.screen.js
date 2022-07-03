@@ -26,6 +26,11 @@ export const SettingsScreen = ({ navigation }) => {
     setPhoto(pictureUri);
   };
 
+  const handleRemoveImage = async () => {
+    AsyncStorage.removeItem(`${user.uid}-photo`);
+    setPhoto(null);
+  };
+
   useFocusEffect(
     useCallback(() => {
       getPictureProfile(user.uid);
@@ -41,7 +46,9 @@ export const SettingsScreen = ({ navigation }) => {
               <Avatar.Icon size={100} icon="human" backgroundColor="#2182BD" />
             </TouchableOpacity>
           ) : (
-            <Avatar.Image size={100} source={{ uri: photo }} />
+            <TouchableOpacity onLongPress={handleRemoveImage}>
+              <Avatar.Image size={100} source={{ uri: photo }} />
+            </TouchableOpacity>
           )}
         </Spacer>
         <Spacer position="top" size="large">
