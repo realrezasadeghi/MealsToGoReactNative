@@ -1,7 +1,7 @@
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useContext, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Avatar, List } from "react-native-paper";
+import { Avatar, List, IconButton, Colors } from "react-native-paper";
 import styled from "styled-components/native";
 import { SafeArea } from "../../../components/safe-area/safe-area.component";
 import { Spacer } from "../../../components/spacer/spacer.component";
@@ -15,7 +15,6 @@ export const SettingsScreen = ({ navigation }) => {
 
   const SettingItem = styled(List.Item)`
     padding: ${(props) => props.theme.space[2]};
-    background-color: rgba(255, 255, 255, 0.4);
   `;
 
   const AvatarContainer = styled(View)`
@@ -25,7 +24,6 @@ export const SettingsScreen = ({ navigation }) => {
   const getPictureProfile = async (uid) => {
     const pictureUri = await AsyncStorage.getItem(`${uid}-photo`);
     setPhoto(pictureUri);
-    console.log(photo);
   };
 
   useFocusEffect(
@@ -49,6 +47,16 @@ export const SettingsScreen = ({ navigation }) => {
         <Spacer position="top" size="large">
           <Text variant="label">{user.email}</Text>
         </Spacer>
+        {photo && (
+          <Spacer position="top" size="medium">
+            <IconButton
+              icon="camera"
+              size={30}
+              color={Colors.blue600}
+              onPress={() => navigation.navigate("Camera")}
+            />
+          </Spacer>
+        )}
       </AvatarContainer>
       <List.Section>
         <SettingItem
