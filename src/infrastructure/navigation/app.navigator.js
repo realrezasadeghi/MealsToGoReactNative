@@ -7,11 +7,14 @@ import { FavoritesContextProvider } from "../../services/favorites/favorites.con
 import { LocationContextProvider } from "../../services/location/location.context";
 import { RestaurantContextProvider } from "../../services/restaurant/restaurant.context";
 import { SettingsNavigator } from "./settings.navigator";
+import { CartContextProvider } from "../../services/cart/cart.context";
+import { CartScreen } from "../../features/cart/screens/cart.screen";
 
 const Tab = createBottomTabNavigator();
 
 const TAB_ICON = {
   Restaurant: "md-restaurant",
+  Cart: "md-cart",
   Map: "md-map",
   Settings: "md-settings",
 };
@@ -31,16 +34,19 @@ const screenOptions = ({ route }) => {
 
 export const AppNavigator = () => {
   return (
-    <FavoritesContextProvider>
-      <LocationContextProvider>
-        <RestaurantContextProvider>
-          <Tab.Navigator screenOptions={screenOptions}>
-            <Tab.Screen name="Restaurant" component={RestaurantsNavigator} />
-            <Tab.Screen name="Map" component={MapScreen} />
-            <Tab.Screen name="Settings" component={SettingsNavigator} />
-          </Tab.Navigator>
-        </RestaurantContextProvider>
-      </LocationContextProvider>
-    </FavoritesContextProvider>
+    <CartContextProvider>
+      <FavoritesContextProvider>
+        <LocationContextProvider>
+          <RestaurantContextProvider>
+            <Tab.Navigator screenOptions={screenOptions}>
+              <Tab.Screen name="Restaurant" component={RestaurantsNavigator} />
+              <Tab.Screen name="Cart" component={CartScreen} />
+              <Tab.Screen name="Map" component={MapScreen} />
+              <Tab.Screen name="Settings" component={SettingsNavigator} />
+            </Tab.Navigator>
+          </RestaurantContextProvider>
+        </LocationContextProvider>
+      </FavoritesContextProvider>
+    </CartContextProvider>
   );
 };
