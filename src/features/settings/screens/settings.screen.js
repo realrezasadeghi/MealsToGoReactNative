@@ -1,6 +1,6 @@
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useContext, useRef, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { ImageBackground, TouchableOpacity, View } from "react-native";
 import { Avatar, List } from "react-native-paper";
 import styled from "styled-components/native";
 import { SafeArea } from "../../../components/safe-area/safe-area.component";
@@ -18,10 +18,19 @@ export const SettingsScreen = ({ navigation }) => {
 
   const SettingItem = styled(List.Item)`
     padding: ${(props) => props.theme.space[2]};
+    background-color: rgba(255, 255, 255, 0.4);
+    margin: ${(props) => props.theme.space[1]};
+    border-radius: 5px;
   `;
 
   const AvatarContainer = styled(View)`
     align-items: center;
+  `;
+
+  const SettingImageBackground = styled(ImageBackground).attrs({
+    source: require("../../../../assets/home.jpg"),
+  })`
+    flex: 1;
   `;
 
   const getPictureProfile = async (uid) => {
@@ -72,40 +81,50 @@ export const SettingsScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeArea>
-      <AvatarContainer>
-        <Spacer position="top" size="medium">
-          {!photo ? <AvatarIcon /> : <AvatarImage />}
-        </Spacer>
-        <Spacer position="top" size="large">
-          <Text variant="label">{user.email}</Text>
-        </Spacer>
-      </AvatarContainer>
-      <List.Section>
-        <SettingItem
-          title="Favorites"
-          description="View your favorites"
-          left={(props) => <List.Icon {...props} color="black" icon="heart" />}
-          onPress={() => navigation.navigate("Favorites")}
+    <SettingImageBackground>
+      <SafeArea>
+        <AvatarContainer>
+          <Spacer position="top" size="medium">
+            {!photo ? <AvatarIcon /> : <AvatarImage />}
+          </Spacer>
+          <Spacer position="top" size="large">
+            <Text variant="label">{user.email}</Text>
+          </Spacer>
+        </AvatarContainer>
+        <List.Section>
+          <SettingItem
+            title="Favorites"
+            description="View your favorites"
+            left={(props) => (
+              <List.Icon {...props} color="black" icon="heart" />
+            )}
+            onPress={() => navigation.navigate("Favorites")}
+          />
+          <SettingItem
+            title="Cart"
+            description="View your cart"
+            left={(props) => <List.Icon {...props} color="black" icon="cart" />}
+            onPress={() => navigation.navigate("Cart")}
+          />
+          <SettingItem
+            title="Map"
+            description="View your maps"
+            left={(props) => <List.Icon {...props} color="black" icon="map" />}
+            onPress={() => navigation.navigate("Cart")}
+          />
+          <SettingItem
+            title="Logout"
+            left={(props) => <List.Icon {...props} color="black" icon="door" />}
+            onPress={onLogout}
+          />
+        </List.Section>
+        <BottomSheetCamera
+          setRef={setRefCamera}
+          deleteImage={handleRemoveImage}
+          navigation={navigation}
+          selectImageFromGallery={handleSelectImageFromGallery}
         />
-        <SettingItem
-          title="Cart"
-          description="View your cart"
-          left={(props) => <List.Icon {...props} color="black" icon="cart" />}
-          onPress={() => navigation.navigate("Cart")}
-        />
-        <SettingItem
-          title="Logout"
-          left={(props) => <List.Icon {...props} color="black" icon="door" />}
-          onPress={onLogout}
-        />
-      </List.Section>
-      <BottomSheetCamera
-        setRef={setRefCamera}
-        deleteImage={handleRemoveImage}
-        navigation={navigation}
-        selectImageFromGallery={handleSelectImageFromGallery}
-      />
-    </SafeArea>
+      </SafeArea>
+    </SettingImageBackground>
   );
 };
