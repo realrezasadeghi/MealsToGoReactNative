@@ -1,5 +1,4 @@
 import { Image, View } from "react-native";
-import { IconButton } from "react-native-paper";
 import styled from "styled-components/native";
 
 export const CardViewContainer = styled(View)`

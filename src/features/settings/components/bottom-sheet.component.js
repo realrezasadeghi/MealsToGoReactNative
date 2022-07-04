@@ -19,7 +19,7 @@ export const BottomSheetCamera = ({
   selectImageFromGallery,
 }) => {
   return (
-    <RBSheet ref={setRef} height={200} openDuration={250}>
+    <RBSheet ref={setRef} height={200} animationType="slide">
       <RBSheetContainer>
         <List.Section>
           <SettingItem

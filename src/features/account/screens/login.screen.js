@@ -50,17 +50,14 @@ export const LoginScreen = ({ navigation }) => {
           </Spacer>
         )}
         <Spacer size="large">
-          {isLoading ? (
-            <ActivityIndicator animating={true} color={Colors.blue500} size={50} />
-          ) : (
-            <AuthButton
-              icon="lock-open-outline"
-              mode="contained"
-              onPress={() => onLogin(email, password)}
-            >
-              Login
-            </AuthButton>
-          )}
+          <AuthButton
+            icon="lock-open-outline"
+            mode="contained"
+            loading={isLoading}
+            onPress={() => onLogin(email, password)}
+          >
+            Login
+          </AuthButton>
         </Spacer>
       </AccountContainer>
       <Spacer size="large">

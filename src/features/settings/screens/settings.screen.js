@@ -89,6 +89,12 @@ export const SettingsScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("Favorites")}
         />
         <SettingItem
+          title="Cart"
+          description="View your cart"
+          left={(props) => <List.Icon {...props} color="black" icon="cart" />}
+          onPress={() => navigation.navigate("Cart")}
+        />
+        <SettingItem
           title="Logout"
           left={(props) => <List.Icon {...props} color="black" icon="door" />}
           onPress={onLogout}

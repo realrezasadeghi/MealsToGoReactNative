@@ -1,10 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
-import { Button, Card, RadioButton } from "react-native-paper";
+import { Card, RadioButton } from "react-native-paper";
 import styled from "styled-components/native";
 import { SafeArea } from "../../../components/safe-area/safe-area.component";
 import { Spacer } from "../../../components/spacer/spacer.component";
 import { CartContext } from "../../../services/cart/cart.context";
+import { BottomSheetCart } from "../components/bottom-sheet-cart.component";
 import { CartInfo } from "../components/cart-info.component";
 
 const ItemCartWrapper = styled(View)`
@@ -16,13 +17,29 @@ const ItemCartWrapper = styled(View)`
   max-width: 400px;
 `;
 
+const ContainerCartInfo = styled(View)`
+  flex: 1;
+`;
+
 export const CartScreen = () => {
   const { cart, remove } = useContext(CartContext);
   const [selectCart, setSelectCart] = useState(null);
+  const bottomSheetCartRef = useRef(null);
 
-  useEffect(() => {
-    console.log(selectCart);
-  }, []);
+  const handleSelectCart = (item) => {
+    bottomSheetCartRef.current.open();
+    setSelectCart(item);
+  };
+
+  const setRefBottomSheetCart = (ref) => {
+    bottomSheetCartRef.current = ref;
+  };
+
+  const handleRemoveCart = () => {
+    remove(selectCart);
+    bottomSheetCartRef.current.close();
+  };
+
   return (
     <SafeArea>
       <FlatList
@@ -35,12 +52,12 @@ export const CartScreen = () => {
               onValueChange={(val) => setSelectCart(val)}
             >
               <Card>
-                <TouchableOpacity onPress={() => setSelectCart(item)}>
+                <TouchableOpacity onPress={handleSelectCart}>
                   <ItemCartWrapper>
                     <RadioButton value={item} />
-                    <View style={{ flex: 1 }}>
+                    <ContainerCartInfo>
                       <CartInfo restaurant={item} />
-                    </View>
+                    </ContainerCartInfo>
                   </ItemCartWrapper>
                 </TouchableOpacity>
               </Card>
@@ -48,13 +65,10 @@ export const CartScreen = () => {
           </Spacer>
         )}
       />
-      {selectCart && (
-        <View style={{ flex: 1, padding: 10 }}>
-          <Button color="blue" mode="contained">
-            Payment
-          </Button>
-        </View>
-      )}
+      <BottomSheetCart
+        setRef={setRefBottomSheetCart}
+        removeCart={handleRemoveCart}
+      />
     </SafeArea>
   );
 };
