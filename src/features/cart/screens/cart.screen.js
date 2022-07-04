@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, ToastAndroid, TouchableOpacity, View } from "react-native";
 import { Card, RadioButton } from "react-native-paper";
 import styled from "styled-components/native";
 import { SafeArea } from "../../../components/safe-area/safe-area.component";
@@ -23,12 +23,12 @@ const ContainerCartInfo = styled(View)`
 
 export const CartScreen = () => {
   const { cart, remove } = useContext(CartContext);
-  const [selectCart, setSelectCart] = useState(null);
+  const [selectCart, setSelectCart] = useState({});
   const bottomSheetCartRef = useRef(null);
 
   const handleSelectCart = (item) => {
-    bottomSheetCartRef.current.open();
     setSelectCart(item);
+    bottomSheetCartRef.current.open();
   };
 
   const setRefBottomSheetCart = (ref) => {
@@ -38,6 +38,14 @@ export const CartScreen = () => {
   const handleRemoveCart = () => {
     remove(selectCart);
     bottomSheetCartRef.current.close();
+  };
+
+  const handlePaymentCart = () => {
+    ToastAndroid.show(
+      `${selectCart.name} successfully payment`,
+      ToastAndroid.SHORT
+    );
+    handleRemoveCart();
   };
 
   return (
@@ -52,7 +60,7 @@ export const CartScreen = () => {
               onValueChange={(val) => setSelectCart(val)}
             >
               <Card>
-                <TouchableOpacity onPress={handleSelectCart}>
+                <TouchableOpacity onPress={() => handleSelectCart(item)}>
                   <ItemCartWrapper>
                     <RadioButton value={item} />
                     <ContainerCartInfo>
@@ -68,6 +76,7 @@ export const CartScreen = () => {
       <BottomSheetCart
         setRef={setRefBottomSheetCart}
         removeCart={handleRemoveCart}
+        paymentCart={handlePaymentCart}
       />
     </SafeArea>
   );

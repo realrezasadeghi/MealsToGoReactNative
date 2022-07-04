@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import { Button, HelperText, TextInput } from "react-native-paper";
 import styled from "styled-components/native";
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -9,14 +9,14 @@ const BottomSheetContainer = styled(ScrollView)`
   padding: ${(props) => props.theme.space[2]};
 `;
 
-export const BottomSheetCart = ({ setRef, removeCart }) => {
+export const BottomSheetCart = ({ setRef, removeCart, paymentCart }) => {
   const [total, setTotal] = useState(12.99);
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState("1");
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (count >= 1) {
-      setTotal(count * 12.99);
+      setTotal(parseInt(count) * 12.99);
       setError(null);
     } else {
       setTotal(12.99);
@@ -36,7 +36,7 @@ export const BottomSheetCart = ({ setRef, removeCart }) => {
         />
         {error && <HelperText type="error">{error}</HelperText>}
         <Spacer position="top" size="medium">
-          <Button mode="contained" disabled={error}>
+          <Button mode="contained" disabled={error} onPress={paymentCart}>
             Payment {total}$
           </Button>
         </Spacer>
