@@ -19,7 +19,7 @@ export const RestaurantDetailScreen = ({ route }) => {
   const { addToCart, cart } = useContext(CartContext);
 
   const ScrollViewContainer = styled(View)`
-    height: 350px;
+    height: 40%;
   `;
 
   const isAddedToCard = cart.find(

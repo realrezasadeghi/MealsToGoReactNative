@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { Camera } from "expo-camera";
-
+import { IconButton } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import styled from "styled-components/native";
+
 import { Text, TouchableOpacity, View } from "react-native";
 import { AuthenticationContext } from "../../../services/authentication/authentication.context";
 
 const ProfileCamera = styled(Camera)`
   width: 100%;
   height: 100%;
-  flex: 1;
 `;
 const InnerSnap = styled.View`
   width: 100%;
@@ -18,9 +17,18 @@ const InnerSnap = styled.View`
   z-index: 999;
 `;
 
+const ContainerChangeCamera = styled.View`
+  position: absolute;
+  background-color: blue;
+  border-radius: 50px;
+  bottom: 60px;
+  left: 45%;
+`;
+
 export const CameraScreen = ({ navigation }) => {
   const cameraRef = useRef();
   const [hasPermission, setHasPermission] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.front);
   const { user } = useContext(AuthenticationContext);
   useEffect(() => {
     (async () => {
@@ -37,6 +45,14 @@ export const CameraScreen = ({ navigation }) => {
     }
   };
 
+  const handleChangeCamera = () => {
+    const isCheckTypeCamera =
+      type === Camera.Constants.Type.front
+        ? Camera.Constants.Type.back
+        : Camera.Constants.Type.front;
+    setType(isCheckTypeCamera);
+  };
+
   if (hasPermission == null) return null;
   else if (!hasPermission)
     return (
@@ -45,13 +61,20 @@ export const CameraScreen = ({ navigation }) => {
       </View>
     );
   return (
-    <ProfileCamera
-      ref={(camera) => (cameraRef.current = camera)}
-      type={Camera.Constants.Type.front}
-    >
-      <TouchableOpacity onPress={snap}>
-        <InnerSnap />
-      </TouchableOpacity>
-    </ProfileCamera>
+    <>
+      <ProfileCamera ref={(camera) => (cameraRef.current = camera)} type={type}>
+        <TouchableOpacity onPress={snap}>
+          <InnerSnap />
+        </TouchableOpacity>
+      </ProfileCamera>
+      <ContainerChangeCamera>
+        <IconButton
+          mode="contained"
+          icon="restart"
+          color="white"
+          onPress={handleChangeCamera}
+        />
+      </ContainerChangeCamera>
+    </>
   );
 };
