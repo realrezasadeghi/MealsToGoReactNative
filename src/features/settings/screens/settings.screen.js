@@ -69,7 +69,7 @@ export const SettingsScreen = ({ navigation }) => {
   );
 
   const AvatarIcon = () => (
-    <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
+    <TouchableOpacity onPress={() => bottomSheetRef.current.open()}>
       <Avatar.Icon size={100} icon="human" backgroundColor="#2182BD" />
     </TouchableOpacity>
   );
@@ -110,7 +110,7 @@ export const SettingsScreen = ({ navigation }) => {
             title="Map"
             description="View your maps"
             left={(props) => <List.Icon {...props} color="black" icon="map" />}
-            onPress={() => navigation.navigate("Cart")}
+            onPress={() => navigation.navigate("Map")}
           />
           <SettingItem
             title="Logout"

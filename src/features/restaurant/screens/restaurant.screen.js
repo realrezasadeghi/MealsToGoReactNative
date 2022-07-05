@@ -18,7 +18,7 @@ import { FadeInView } from "../../../components/animations/fade.animation";
 const LoadingContainer = styled(View)`
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 45%;
 `;
 
 const RestaurantListContainer = styled(View)`
